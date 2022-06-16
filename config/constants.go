@@ -1,14 +1,22 @@
 package config
 
 import (
+	"log"
+	"os"
+
+	"github.com/joho/godotenv"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 )
 
 func SetupConfig() *oauth2.Config {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 	conf := &oauth2.Config{
-		ClientID:     "74216694885-buhikcp8866cfc0niudeskt1hjik0m38.apps.googleusercontent.com",
-		ClientSecret: "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",
+		ClientID:     os.Getenv("ClientID"),
+		ClientSecret: os.Getenv("ClientSecret"),
 		Endpoint:     google.Endpoint,
 		RedirectURL:  "http://localhost:3000/google/callback",
 		Scopes: []string{
