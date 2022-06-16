@@ -12,11 +12,14 @@ import (
 	"golang.org/x/oauth2/google"
 )
 
+var MySigningKey []byte
+
 func SetupConfig() *oauth2.Config {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
+	MySigningKey = []byte(os.Getenv("SIGNING_KEY"))
 	conf := &oauth2.Config{
 		ClientID:     os.Getenv("GoogleClientID"),
 		ClientSecret: os.Getenv("GoogleClientSecret"),
