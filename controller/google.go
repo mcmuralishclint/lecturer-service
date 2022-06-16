@@ -8,6 +8,7 @@ import (
 	"net/http"
 
 	"github.com/mcmuralishclint/personal_tutor/lecturer-service/config"
+	"github.com/mcmuralishclint/personal_tutor/lecturer-service/middleware"
 	"github.com/mcmuralishclint/personal_tutor/lecturer-service/models"
 )
 
@@ -46,6 +47,8 @@ func GoogleCallback(res http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		fmt.Fprintln(res, "Unable to create or retreive user")
 	}
+
+	middleware.GenerateJWT(email)
 
 	if existing {
 		fmt.Fprintln(res, "Welcome back "+email)
