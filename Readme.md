@@ -8,6 +8,7 @@ GoogleClientID="YOUR_GOOGLE_CLIENT_ID"
 GoogleClientSecret="YOUR GOOGLE_CLIENT_SECRET"
 MONGO_USERNAME="MONGO_USERNAME"
 MONGO_PASSWORD="MONGO_PASSWORD"
+SIGNING_KEY="SIGNING_KEY_FOR_JWT"
 ```
 
 
@@ -21,3 +22,9 @@ MONGO_PASSWORD="MONGO_PASSWORD"
 
 2. **1.1-skills-crud**
 - Allow CRUD on Skills model
+
+3. **1.2-jwt-authentication**
+- Introduce middleware to create jwt token upon signing in
+- Create Admin model
+- Wrap skills path within the newly introduced middleware
+- Check if the current user is an admin when performing CRUD on the skills path
