@@ -10,6 +10,7 @@ import (
 
 var LecturerInfoCollection *mongo.Collection
 var SkillsCollection *mongo.Collection
+var AdminCollection *mongo.Collection
 var Client *mongo.Client
 
 func ConnectDB() {
@@ -22,4 +23,5 @@ func ConnectDB() {
 	}
 	LecturerInfoCollection = Client.Database("lecturer").Collection("lecturer-info")
 	SkillsCollection = Client.Database("lecturer").Collection("skills")
+	AdminCollection = Client.Database("adminUser").Collection("admin")
 }
