@@ -3,15 +3,12 @@ package models
 import (
 	"context"
 	"fmt"
-	"log"
-	"os"
 	"reflect"
 	"time"
 
-	"github.com/joho/godotenv"
+	"github.com/mcmuralishclint/personal_tutor/lecturer-service/config"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
@@ -29,11 +26,7 @@ type Lecturer struct {
 }
 
 func ConnectDB() error {
-	err = godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-	Client, err = mongo.Connect(context.TODO(), options.Client().ApplyURI("mongodb+srv://"+os.Getenv("MONGO_USERNAME")+":"+os.Getenv("MONGO_PASSWORD")+"@my-personal-professor-v.k20xc.mongodb.net/?retryWrites=true&w=majority"))
+	Client, err := config.InitMongo()
 	if err != nil {
 		return err
 	}
@@ -47,7 +40,7 @@ func ConnectDB() error {
 func FindLecturer(email string) (Lecturer, error) {
 	ctx, _ := context.WithTimeout(context.Background(), 15*time.Second)
 	var lecturer Lecturer
-	err := LecturerInfoCollection.FindOne(ctx, bson.D{}).Decode(&lecturer)
+	err := LecturerInfoCollection.FindOne(ctx, bson.M{"email": email}).Decode(&lecturer)
 	if err != nil {
 		fmt.Println("Error when searching for email: ", err, email)
 		return Lecturer{}, nil
