@@ -15,8 +15,8 @@ func SetupConfig() *oauth2.Config {
 		log.Fatal("Error loading .env file")
 	}
 	conf := &oauth2.Config{
-		ClientID:     os.Getenv("ClientID"),
-		ClientSecret: os.Getenv("ClientSecret"),
+		ClientID:     os.Getenv("GoogleClientID"),
+		ClientSecret: os.Getenv("GoogleClientSecret"),
 		Endpoint:     google.Endpoint,
 		RedirectURL:  "http://localhost:3000/google/callback",
 		Scopes: []string{
