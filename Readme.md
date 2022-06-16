@@ -13,8 +13,11 @@ MONGO_PASSWORD="MONGO_PASSWORD"
 
 
 ### Tags
-1. google-login-mongo-integration
+1. 1.0-google-login-mongo-integration
 - Google login
 - Mongo integration
 - Find if a document with the email of the user is present in the mongo collection
 - If user is not present in the collection, create a document 
+
+2. 1.1-skills-crud
+- Allow CRUD on Skills model
