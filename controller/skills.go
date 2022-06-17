@@ -13,6 +13,7 @@ import (
 )
 
 func Skills(res http.ResponseWriter, req *http.Request) {
+	response := make(map[string][]string)
 	skills := models.Skills()
 	var skill models.Skill
 	var allSkills []string
@@ -23,7 +24,8 @@ func Skills(res http.ResponseWriter, req *http.Request) {
 		}
 		allSkills = append(allSkills, skill.Value)
 	}
-	json.NewEncoder(res).Encode(allSkills)
+	response["skills"] = allSkills
+	json.NewEncoder(res).Encode(response)
 }
 
 func CreateSkill(res http.ResponseWriter, req *http.Request) {
