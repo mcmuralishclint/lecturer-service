@@ -68,5 +68,10 @@ func DeleteSkill(res http.ResponseWriter, req *http.Request) {
 		json.NewEncoder(res).Encode(err.Error())
 		return
 	}
+	err = models.DeleteLecturerSkillsBySkill(name_map)
+	if err != nil {
+		json.NewEncoder(res).Encode(err.Error())
+		return
+	}
 	json.NewEncoder(res).Encode(nil)
 }
