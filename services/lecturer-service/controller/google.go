@@ -7,9 +7,9 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/mcmuralishclint/personal_tutor/lecturer-service/config"
-	"github.com/mcmuralishclint/personal_tutor/lecturer-service/middleware"
-	"github.com/mcmuralishclint/personal_tutor/lecturer-service/models"
+	"github.com/mcmuralishclint/personal_tutor/services/lecturer-service/config"
+	"github.com/mcmuralishclint/personal_tutor/services/lecturer-service/middleware"
+	"github.com/mcmuralishclint/personal_tutor/services/lecturer-service/models"
 )
 
 func GoogleLogin(res http.ResponseWriter, req *http.Request) {

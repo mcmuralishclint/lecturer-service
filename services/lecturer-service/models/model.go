@@ -3,7 +3,7 @@ package models
 import (
 	"context"
 
-	"github.com/mcmuralishclint/personal_tutor/lecturer-service/config"
+	"github.com/mcmuralishclint/personal_tutor/services/lecturer-service/config"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
