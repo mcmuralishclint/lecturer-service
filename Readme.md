@@ -32,3 +32,6 @@ SIGNING_KEY="SIGNING_KEY_FOR_JWT"
 4. **1.3-LecturerSkills-crud**
 - Allow CRUD on LecturerSkill model
 - Delete LecturerSkill if a particular skill is deleted
+
+5. **2.0-Mono-Repo**
+- Changed project structure to include multipe go repos with similar functionalities in the same repo
