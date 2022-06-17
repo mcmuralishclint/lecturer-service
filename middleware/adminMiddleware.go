@@ -20,7 +20,6 @@ func IsAuthorized(next http.Handler) http.Handler {
 		if success {
 			if claims["email"] != "" {
 				CurrentUserEmail = claims["user"].(string)
-				fmt.Println(CurrentUserEmail)
 				next.ServeHTTP(w, r)
 			} else {
 				http.Error(w, "Forbidden", http.StatusForbidden)
