@@ -3,8 +3,10 @@ package models
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type LecturerSkill struct {
@@ -32,6 +34,14 @@ func AllLecturerSkills(email string) []string {
 	return allSkills
 }
 
-func AddLecturerSkills() {
-
+func AddLecturerSkills(LecturerSkill LecturerSkill) (bool, error) {
+	ctx, _ := context.WithTimeout(context.Background(), 15*time.Second)
+	filter := bson.D{{"email", LecturerSkill.Email}, {"skill", LecturerSkill.Skill}}
+	opts := options.Update().SetUpsert(true)
+	_, insertErr := LecturerSkillCollection.UpdateOne(ctx, filter, bson.D{{"$set", bson.D{{"email", LecturerSkill.Email}}}}, opts)
+	if insertErr != nil {
+		fmt.Println("Error when upserting lectureSkill", insertErr)
+		return false, insertErr
+	}
+	return true, nil
 }
