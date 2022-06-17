@@ -2,8 +2,10 @@ package controller
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 
+	"github.com/gorilla/mux"
 	"github.com/mcmuralishclint/personal_tutor/lecturer-service/middleware"
 	"github.com/mcmuralishclint/personal_tutor/lecturer-service/models"
 )
@@ -34,4 +36,19 @@ func AddLecturerSkills(res http.ResponseWriter, req *http.Request) {
 		models.AddLecturerSkills(lecturerSkill)
 		json.NewEncoder(res).Encode(lecturerSkill)
 	}
+}
+
+func DeleteLecturerSkills(res http.ResponseWriter, req *http.Request) {
+	vars := mux.Vars(req)
+	skill, ok := vars["skill"]
+	if !ok {
+		json.NewEncoder(res).Encode(errors.New("input a valid name map"))
+		return
+	}
+	err := models.DeleteLecturerSkill(skill, middleware.CurrentUserEmail)
+	if err != nil {
+		json.NewEncoder(res).Encode(err.Error())
+		return
+	}
+	json.NewEncoder(res).Encode(nil)
 }
