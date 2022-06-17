@@ -28,3 +28,7 @@ SIGNING_KEY="SIGNING_KEY_FOR_JWT"
 - Create Admin model
 - Wrap skills path within the newly introduced middleware
 - Check if the current user is an admin when performing CRUD on the skills path
+
+4. **1.3-LecturerSkills-crud**
+- Allow CRUD on LecturerSkill model
+- Delete LecturerSkill if a particular skill is deleted
