@@ -19,8 +19,12 @@ func GoogleLogin(res http.ResponseWriter, req *http.Request) {
 }
 
 func GoogleCallback(res http.ResponseWriter, req *http.Request) {
+	response := make(map[string]string)
+
 	state := req.URL.Query()["state"][0]
 	if state != "randomstate" {
+		response["email"] = ""
+		json.NewEncoder(res).Encode(response)
 		fmt.Fprintln(res, "states dont match")
 		return
 	}
@@ -30,31 +34,49 @@ func GoogleCallback(res http.ResponseWriter, req *http.Request) {
 
 	token, err := googleConfig.Exchange(context.Background(), code)
 	if err != nil {
+		response["email"] = ""
+		json.NewEncoder(res).Encode(response)
 		fmt.Fprintln(res, "Code Token Exchange Failed")
+		return
 	}
 
 	resp, err := http.Get("https://www.googleapis.com/oauth2/v2/userinfo?access_token=" + token.AccessToken)
 	if err != nil {
+		response["email"] = ""
+		json.NewEncoder(res).Encode(response)
 		fmt.Fprintln(res, "Failed to fetch user data")
+		return
 	}
 
 	userData, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
+		response["email"] = ""
+		json.NewEncoder(res).Encode(response)
 		fmt.Fprintln(res, "JSON parsing failed")
+		return
 	}
 
 	existing, email, err := createOrQueryUser(string(userData))
 	if err != nil {
+		response["email"] = ""
+		json.NewEncoder(res).Encode(response)
 		fmt.Fprintln(res, "Unable to create or retreive user")
+		return
 	}
 
-	middleware.GenerateJWT(email)
+	jwtToken, _ := middleware.GenerateJWT(email)
 
 	if existing {
-		fmt.Fprintln(res, "Welcome back "+email)
+		fmt.Println("Welcome back " + email)
+		res.WriteHeader(http.StatusOK)
 	} else {
-		fmt.Fprintln(res, "Greetings "+email)
+		fmt.Println("Greetings " + email)
+		res.WriteHeader(http.StatusCreated)
 	}
+
+	response["email"] = email
+	response["token"] = jwtToken
+	json.NewEncoder(res).Encode(response)
 
 }
 
