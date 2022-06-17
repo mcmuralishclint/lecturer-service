@@ -30,7 +30,7 @@ func main() {
 	lecturerSkillsRouter := router.PathPrefix("/lecturer_skills").Subrouter()
 	lecturerSkillsRouter.Use(middleware.IsAuthorized)
 	lecturerSkillsRouter.HandleFunc("", controller.AllLecturerSkills).Methods("GET")
-	lecturerSkillsRouter.HandleFunc("/", controller.AddLecturerSkills).Methods("POST")
+	lecturerSkillsRouter.HandleFunc("", controller.AddLecturerSkills).Methods("POST")
 	// lecturerSkillsRouter.HandleFunc("/", controller.DeleteLecturerSkills).Methods("DELETE")
 
 	http.ListenAndServe(":3000", router)
