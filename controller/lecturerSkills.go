@@ -16,18 +16,22 @@ func AllLecturerSkills(res http.ResponseWriter, req *http.Request) {
 
 func AddLecturerSkills(res http.ResponseWriter, req *http.Request) {
 	decoder := json.NewDecoder(req.Body)
-	var lectureSkill models.LecturerSkill
-	err := decoder.Decode(&lectureSkill)
+	var lecturerSkill models.LecturerSkill
+	err := decoder.Decode(&lecturerSkill)
+
 	if err != nil {
 		json.NewEncoder(res).Encode(err.Error())
 		return
 	}
-	// fmt.Println(skill)
-
-	// err = models.CreateSkill(skill)
-	// if err != nil {
-	// 	json.NewEncoder(res).Encode(err.Error())
-	// 	return
-	// }
-	// json.NewEncoder(res).Encode(skill)
+	lecturerSkill.Email = middleware.CurrentUserEmail
+	_, err = models.FindLecturer(lecturerSkill.Email)
+	if err != nil {
+		json.NewEncoder(res).Encode(err.Error())
+		return
+	}
+	success, _ := models.FindSkill(lecturerSkill.Skill)
+	if success {
+		models.AddLecturerSkills(lecturerSkill)
+		json.NewEncoder(res).Encode(lecturerSkill)
+	}
 }
