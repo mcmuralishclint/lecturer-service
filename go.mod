@@ -1,4 +1,4 @@
-module github.com/mcmuralishclint/personal_tutor/lecturer-service
+module github.com/mcmuralishclint/personal_tutor
 
 go 1.17
 

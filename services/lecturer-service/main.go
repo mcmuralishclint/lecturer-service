@@ -4,9 +4,9 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/mcmuralishclint/personal_tutor/lecturer-service/controller"
-	"github.com/mcmuralishclint/personal_tutor/lecturer-service/middleware"
-	"github.com/mcmuralishclint/personal_tutor/lecturer-service/models"
+	"github.com/mcmuralishclint/personal_tutor/services/lecturer-service/controller"
+	"github.com/mcmuralishclint/personal_tutor/services/lecturer-service/middleware"
+	"github.com/mcmuralishclint/personal_tutor/services/lecturer-service/models"
 )
 
 func main() {

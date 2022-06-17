@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
-	"github.com/mcmuralishclint/personal_tutor/lecturer-service/config"
-	"github.com/mcmuralishclint/personal_tutor/lecturer-service/models"
+	"github.com/mcmuralishclint/personal_tutor/services/lecturer-service/config"
+	"github.com/mcmuralishclint/personal_tutor/services/lecturer-service/models"
 )
 
 var CurrentUserEmail string

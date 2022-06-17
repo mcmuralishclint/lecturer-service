@@ -9,7 +9,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/mcmuralishclint/personal_tutor/lecturer-service/models"
+	"github.com/mcmuralishclint/personal_tutor/services/lecturer-service/models"
 )
 
 func Skills(res http.ResponseWriter, req *http.Request) {
