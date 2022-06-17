@@ -45,3 +45,15 @@ func AddLecturerSkills(LecturerSkill LecturerSkill) (bool, error) {
 	}
 	return true, nil
 }
+
+func DeleteLecturerSkill(skill string, email string) error {
+	fmt.Println(skill, email)
+	ctx, _ := context.WithTimeout(context.Background(), 15*time.Second)
+	result, err := LecturerSkillCollection.DeleteOne(ctx, bson.M{"skill": skill, "email": email})
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+	fmt.Printf("DeleteOne removed %v document(s)\n", result.DeletedCount)
+	return nil
+}
