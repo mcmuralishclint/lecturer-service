@@ -11,7 +11,27 @@ import (
 	"github.com/mcmuralishclint/personal_tutor/lecturer-service/models"
 )
 
+var CurrentUserEmail string
+
 func IsAuthorized(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		token := r.Header.Get("token")
+		claims, success := extractClaims(token)
+		if success {
+			if claims["email"] != "" {
+				CurrentUserEmail = claims["user"].(string)
+				fmt.Println(CurrentUserEmail)
+				next.ServeHTTP(w, r)
+			} else {
+				http.Error(w, "Forbidden", http.StatusForbidden)
+			}
+		} else {
+			http.Error(w, "Forbidden", http.StatusForbidden)
+		}
+	})
+}
+
+func IsAdmin(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		token := r.Header.Get("token")
 		claims, success := extractClaims(token)
@@ -59,5 +79,6 @@ func GenerateJWT(email string) (string, error) {
 		fmt.Printf("Something went wrong %s", err.Error())
 		return "", err
 	}
+	fmt.Println(tokenString)
 	return tokenString, nil
 }
