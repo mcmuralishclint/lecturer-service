@@ -1,17 +1,17 @@
 package domain
 
 type Service interface {
-	Find(name_map string) Skill
-	Create(skill Skill) (Skill, error)
-	Delete(name_map string) (bool, error)
-	FindAll() []Skill
+	FindSkill(name_map string) Skill
+	CreateSkill(skill Skill) (Skill, error)
+	DeleteSkill(name_map string) (bool, error)
+	FindAllSkills() []Skill
 }
 
 type Repository interface {
-	Find(name_map string) Skill
-	Create(skill Skill) (Skill, error)
-	Delete(name_map string) (bool, error)
-	FindAll() []Skill
+	FindSkill(name_map string) Skill
+	CreateSkill(skill Skill) (Skill, error)
+	DeleteSkill(name_map string) (bool, error)
+	FindAllSkills() []Skill
 }
 
 type service struct {
@@ -22,15 +22,15 @@ func NewSkillService(skillrepo Repository) Service {
 	return &service{skillrepo: skillrepo}
 }
 
-func (s *service) Find(name_map string) Skill {
-	return s.skillrepo.Find(name_map)
+func (s *service) FindSkill(name_map string) Skill {
+	return s.skillrepo.FindSkill(name_map)
 }
-func (s *service) Create(skill Skill) (Skill, error) {
-	return s.skillrepo.Create(skill)
+func (s *service) CreateSkill(skill Skill) (Skill, error) {
+	return s.skillrepo.CreateSkill(skill)
 }
-func (s *service) Delete(name_map string) (bool, error) {
-	return s.skillrepo.Delete(name_map)
+func (s *service) DeleteSkill(name_map string) (bool, error) {
+	return s.skillrepo.DeleteSkill(name_map)
 }
-func (s *service) FindAll() []Skill {
-	return s.skillrepo.FindAll()
+func (s *service) FindAllSkills() []Skill {
+	return s.skillrepo.FindAllSkills()
 }

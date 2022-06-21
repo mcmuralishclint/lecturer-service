@@ -21,7 +21,7 @@ func NewHandler(skillService domain.Service) *handler {
 func (h *handler) Find(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	name_map := chi.URLParam(r, "name_map")
-	skill := h.skillService.Find(name_map)
+	skill := h.skillService.FindSkill(name_map)
 	json.NewEncoder(w).Encode(skill)
 }
 func (h *handler) Create(w http.ResponseWriter, r *http.Request) {
@@ -32,12 +32,12 @@ func (h *handler) Create(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(err.Error())
 		return
 	}
-	existingSkill := h.skillService.Find(skill.NameMap)
+	existingSkill := h.skillService.FindSkill(skill.NameMap)
 	if existingSkill.NameMap != "" {
 		json.NewEncoder(w).Encode(errors.New("Record already exists").Error())
 		return
 	}
-	skill, err = h.skillService.Create(skill)
+	skill, err = h.skillService.CreateSkill(skill)
 	if err != nil {
 		json.NewEncoder(w).Encode(err.Error())
 		return
@@ -47,7 +47,7 @@ func (h *handler) Create(w http.ResponseWriter, r *http.Request) {
 func (h *handler) Delete(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	name_map := chi.URLParam(r, "name_map")
-	success, err := h.skillService.Delete(name_map)
+	success, err := h.skillService.DeleteSkill(name_map)
 	if err != nil {
 		json.NewEncoder(w).Encode(err.Error())
 	}
@@ -55,6 +55,6 @@ func (h *handler) Delete(w http.ResponseWriter, r *http.Request) {
 }
 func (h *handler) FindAll(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	skills := h.skillService.FindAll()
+	skills := h.skillService.FindAllSkills()
 	json.NewEncoder(w).Encode(skills)
 }
