@@ -1,37 +1,28 @@
 package main
 
 import (
+	"log"
 	"net/http"
 
-	"github.com/gorilla/mux"
-	"github.com/mcmuralishclint/personal_tutor/services/lecturer-service/controller"
-	"github.com/mcmuralishclint/personal_tutor/services/lecturer-service/middleware"
-	"github.com/mcmuralishclint/personal_tutor/services/lecturer-service/models"
+	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
+	"github.com/mcmuralishclint/personal_tutor/services/lecturer-service/api"
+	"github.com/mcmuralishclint/personal_tutor/services/lecturer-service/domain"
+	"github.com/mcmuralishclint/personal_tutor/services/lecturer-service/repository"
 )
 
 func main() {
-	models.ConnectDB()
-	router := mux.NewRouter()
+	mongoUri := "mongodb+srv://" + "mcmuralishclint" + ":" + "mc159357555" + "@my-personal-professor-v.k20xc.mongodb.net/?retryWrites=true&w=majority"
+	repo, _ := repository.NewMongoRepository(mongoUri, "lecturer", 5)
+	service := domain.NewSkillService(repo)
+	handler := api.NewHandler(service)
 
-	// Google Login
-	router.HandleFunc("/google/login", controller.GoogleLogin)
-	router.HandleFunc("/google/callback", controller.GoogleCallback)
+	r := chi.NewRouter()
+	r.Use(middleware.RequestID)
+	r.Use(middleware.RealIP)
+	r.Use(middleware.Logger)
+	r.Use(middleware.Recoverer)
 
-	// SKills
-	skillsRouter := router.PathPrefix("/skills").Subrouter()
-	skillsRouter.Use(middleware.IsAdmin)
-	skillsRouter.HandleFunc("/skill/{name_map}", controller.DeleteSkill).Methods("DELETE")
-	skillsRouter.HandleFunc("", controller.CreateSkill).Methods("POST")
-
-	router.HandleFunc("/skills", controller.Skills).Methods("GET")
-	router.HandleFunc("/skill", controller.FindSkill).Methods("GET")
-
-	// Lecturer-Skills
-	lecturerSkillsRouter := router.PathPrefix("/lecturer_skills").Subrouter()
-	lecturerSkillsRouter.Use(middleware.IsAuthorized)
-	lecturerSkillsRouter.HandleFunc("", controller.AllLecturerSkills).Methods("GET")
-	lecturerSkillsRouter.HandleFunc("", controller.AddLecturerSkills).Methods("POST")
-	lecturerSkillsRouter.HandleFunc("/{skill}", controller.DeleteLecturerSkills).Methods("DELETE")
-
-	http.ListenAndServe(":3000", router)
+	r.Get("/skills", handler.FindAll)
+	log.Fatal(http.ListenAndServe(":3000", r))
 }
