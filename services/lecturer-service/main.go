@@ -9,12 +9,12 @@ import (
 	"github.com/mcmuralishclint/personal_tutor/services/lecturer-service/api"
 	"github.com/mcmuralishclint/personal_tutor/services/lecturer-service/config"
 	"github.com/mcmuralishclint/personal_tutor/services/lecturer-service/domain"
-	"github.com/mcmuralishclint/personal_tutor/services/lecturer-service/repository"
+	"github.com/mcmuralishclint/personal_tutor/services/lecturer-service/repository/mongo"
 )
 
 func main() {
 	conf, _ := config.NewConfig("/home/muralishc/Downloads/myTutor/myTutor/services/lecturer-service/config/config.yaml")
-	repo, _ := repository.NewMongoRepository(conf.Database.URL, conf.Database.DB, conf.Database.Timeout)
+	repo, _ := mongo.NewMongoRepository(conf.Database.URL, conf.Database.DB, conf.Database.Timeout)
 	service := domain.NewSkillService(repo)
 	handler := api.NewHandler(service)
 

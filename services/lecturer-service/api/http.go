@@ -32,8 +32,8 @@ func (h *handler) Create(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(err.Error())
 		return
 	}
-	skill = h.skillService.Find(skill.NameMap)
-	if skill.NameMap != "" {
+	existingSkill := h.skillService.Find(skill.NameMap)
+	if existingSkill.NameMap != "" {
 		json.NewEncoder(w).Encode(errors.New("Record already exists").Error())
 		return
 	}
