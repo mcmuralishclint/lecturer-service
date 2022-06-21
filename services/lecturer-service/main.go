@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 
@@ -15,7 +14,6 @@ import (
 
 func main() {
 	conf, _ := config.NewConfig("/home/muralishc/Downloads/myTutor/myTutor/services/lecturer-service/config/config.yaml")
-	fmt.Println(conf.Database.URL, conf.Database.DB, conf.Database.Timeout)
 	repo, _ := repository.NewMongoRepository(conf.Database.URL, conf.Database.DB, conf.Database.Timeout)
 	service := domain.NewSkillService(repo)
 	handler := api.NewHandler(service)
@@ -27,5 +25,8 @@ func main() {
 	r.Use(middleware.Recoverer)
 
 	r.Get("/skills", handler.FindAll)
+	r.Get("/skills/{name_map}", handler.Find)
+	r.Delete("/skills/{name_map}", handler.Delete)
+	r.Post("/skills", handler.Create)
 	log.Fatal(http.ListenAndServe(":3000", r))
 }
