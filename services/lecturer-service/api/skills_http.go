@@ -18,13 +18,13 @@ func NewHandler(skillService domain.Service) *handler {
 	return &handler{skillService: skillService}
 }
 
-func (h *handler) Find(w http.ResponseWriter, r *http.Request) {
+func (h *handler) FindSkill(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	name_map := chi.URLParam(r, "name_map")
 	skill := h.skillService.FindSkill(name_map)
 	json.NewEncoder(w).Encode(skill)
 }
-func (h *handler) Create(w http.ResponseWriter, r *http.Request) {
+func (h *handler) CreateSkill(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var skill domain.Skill
 	err := json.NewDecoder(r.Body).Decode(&skill)
@@ -44,7 +44,7 @@ func (h *handler) Create(w http.ResponseWriter, r *http.Request) {
 	}
 	json.NewEncoder(w).Encode(skill)
 }
-func (h *handler) Delete(w http.ResponseWriter, r *http.Request) {
+func (h *handler) DeleteSkill(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	name_map := chi.URLParam(r, "name_map")
 	success, err := h.skillService.DeleteSkill(name_map)
@@ -53,7 +53,7 @@ func (h *handler) Delete(w http.ResponseWriter, r *http.Request) {
 	}
 	json.NewEncoder(w).Encode(success)
 }
-func (h *handler) FindAll(w http.ResponseWriter, r *http.Request) {
+func (h *handler) FindAllSkills(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	skills := h.skillService.FindAllSkills()
 	json.NewEncoder(w).Encode(skills)

@@ -24,9 +24,9 @@ func main() {
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 
-	r.Get("/skills", handler.FindAll)
-	r.Get("/skills/{name_map}", handler.Find)
-	r.Delete("/skills/{name_map}", handler.Delete)
-	r.Post("/skills", handler.Create)
+	r.Get("/skills", handler.FindAllSkills)
+	r.Get("/skills/{name_map}", handler.FindSkill)
+	r.Delete("/skills/{name_map}", handler.DeleteSkill)
+	r.Post("/skills", handler.CreateSkill)
 	log.Fatal(http.ListenAndServe(":3000", r))
 }
