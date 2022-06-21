@@ -1,19 +1,22 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/mcmuralishclint/personal_tutor/services/lecturer-service/api"
+	"github.com/mcmuralishclint/personal_tutor/services/lecturer-service/config"
 	"github.com/mcmuralishclint/personal_tutor/services/lecturer-service/domain"
 	"github.com/mcmuralishclint/personal_tutor/services/lecturer-service/repository"
 )
 
 func main() {
-	mongoUri := "mongodb+srv://" + "mcmuralishclint" + ":" + "mc159357555" + "@my-personal-professor-v.k20xc.mongodb.net/?retryWrites=true&w=majority"
-	repo, _ := repository.NewMongoRepository(mongoUri, "lecturer", 5)
+	conf, _ := config.NewConfig("/home/muralishc/Downloads/myTutor/myTutor/services/lecturer-service/config/config.yaml")
+	fmt.Println(conf.Database.URL, conf.Database.DB, conf.Database.Timeout)
+	repo, _ := repository.NewMongoRepository(conf.Database.URL, conf.Database.DB, conf.Database.Timeout)
 	service := domain.NewSkillService(repo)
 	handler := api.NewHandler(service)
 

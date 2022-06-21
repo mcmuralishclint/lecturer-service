@@ -3,7 +3,7 @@ package config
 import (
 	"os"
 
-	"gopkg.in/yaml.v2"
+	yaml "gopkg.in/yaml.v2"
 )
 
 //Config ...
@@ -23,7 +23,6 @@ type Config struct {
 func NewConfig(configFile string) (*Config, error) {
 	file, err := os.Open(configFile)
 	if err != nil {
-
 		return nil, err
 	}
 	defer file.Close()
